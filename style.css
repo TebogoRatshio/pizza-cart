@@ -1,0 +1,128 @@
+.heading {
+    text-align: center;
+}
+
+.subheading {
+    text-align: center;
+    padding-right: 15%;
+    position: sticky;
+}
+
+.orders {
+    text-align: center;
+}
+
+.message_colour {
+    color: orangered;
+}
+
+
+.total {
+    text-align: center;
+    padding: 0%;
+}
+
+.shopping_cart {
+    text-align: center;
+}
+
+
+
+body {
+    background-color: goldenrod;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+
+.container {
+    background-color: limegreen;
+    flex: 3;
+    padding: 1em;
+    text-align: center;
+    border-radius: 1em;
+    margin: 1em;
+}
+
+
+.pizza {
+    
+    border: 5px solid;
+    padding: 1em;
+    margin: 1em;
+   /* margin-left: 0em;*/
+    margin-bottom: 0.5em;
+    border-radius: 1em;
+
+
+    /*width: 20em;
+    display: block;
+    min-height: 20em;
+    */
+
+}
+
+.medium_pizza {
+    background-color: #C16200;
+    flex: 2
+
+
+}
+
+.large_pizza {
+    background-color: #650D1B;
+    flex: 3
+    
+}
+
+
+.small_pizza {
+    background-color: #823200;
+    flex: 1.5
+    
+}
+
+.contact_us {
+    background-color: brown;
+}
+
+
+.pizza.contact_us {
+    text-align: center; 
+}
+
+.contact-list {
+    list-style: none; 
+    padding: 0; 
+}
+
+.contact-list li {
+    margin-bottom: 10px; 
+}
+
+
+
+.special {
+    background-color: aqua;
+    color: cornsilk;
+
+}
+
+
+@media (min-width: 760px) {
+
+    body {
+        background-color: darkorange;
+    }
+}
+
+
+@media (min-width: 960px) {
+
+    body {
+        background-color: aliceblue;
+    }
+
+    .pizzas {
+        display: flex;
+    }
+}

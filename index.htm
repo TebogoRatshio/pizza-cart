@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfect-Pizza</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.js" defer></script>
+</head>
+
+<body>
+
+    <div>
+        <div class="heading">
+            <h1>Perfect Pizza</h1>
+        </div>
+    
+        <div class="subheading">
+            <h4>Pizza Orders</h4>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="shopping_cart">
+            <h2>Shopping Cart</h2>
+        </div>
+        
+        <div class="orders">
+            <h3>Small Pizza 
+                <button onclick="increment('small')">+</button>
+                <button onclick="decrement('small')">-</button>
+                R 49.00
+                <span id="small-count">[0]</span>
+            </h3>
+        </div>
+        <div class="orders">
+            <h3>Medium Pizza 
+                <button onclick="increment('medium')">+</button>
+                <button onclick="decrement('medium')">-</button>
+                R 89.00
+                <span id="medium-count">[0]</span>
+            </h3>
+        </div>
+        <div class="orders">
+            <h3>Large Pizza 
+                <button onclick="increment('large')">+</button>
+                <button onclick="decrement('large')">-</button>
+                R 129.00
+                <span id="large-count">[0]</span>
+            </h3>
+        </div>
+    
+        <div class="total">
+            <h3>
+                Total Cost: R <span id="total-cost">0</span>
+            </h3>
+        </div>
+
+        <div x-data="cart()" class="container">
+            <div class="message_colour">
+            <h2>Message goes here</h2> </div>
+            <ul>
+                <template x-for="pizza in pizzas" :key="pizza.id">
+                    <li x-text="pizza.name"></li>
+                </template>
+            </ul>
+            <button x-show="pizzas.length > 0" @click="checkout()">Check Out</button>
+
+            <div x-data="cart()" class="container">
+                <button @click="checkout()">Check Out</button>
+                
+                <div x-show="showPaymentInput" class="payment-input">
+                    <label for="payment">Payment Amount:</label>
+                    <input type="number" x-model="paymentAmount" id="payment">
+                </div>
+            
+    
+            <button @click="processPayment()">Payment</button>
+            
+            <div x-show="message" x-text="message" class="message"></div>
+        </div>
+    
+        <script>
+            const prices = {
+                small: 49.00,
+                medium: 89.00,
+                large: 129.00
+            };
+    
+            function updateTotalCost() {
+                const smallCount = parseInt(document.getElementById('small-count').textContent.replace('[','').replace(']','')) || 0;
+                const mediumCount = parseInt(document.getElementById('medium-count').textContent.replace('[','').replace(']','')) || 0;
+                const largeCount = parseInt(document.getElementById('large-count').textContent.replace('[','').replace(']','')) || 0;
+                
+                const totalCost = (smallCount * prices.small) + (mediumCount * prices.medium) + (largeCount * prices.large);
+                document.getElementById('total-cost').textContent = totalCost;
+            }
+    
+            function increment(size) {
+                const countElement = document.getElementById(`${size}-count`);
+                let count = parseInt(countElement.textContent.replace('[','').replace(']','')) || 0;
+                countElement.textContent = `[${++count}]`;
+                updateTotalCost();
+            }
+    
+            function decrement(size) {
+                const countElement = document.getElementById(`${size}-count`);
+                let count = parseInt(countElement.textContent.replace('[','').replace(']','')) || 0;
+                if (count > 0) {
+                    countElement.textContent = `[${--count}]`;
+                }
+                updateTotalCost();
+            }
+    
+            function cart() {
+                return {
+                    pizzas: [],
+                    showPaymentInput: false,
+                    paymentAmount: 0,
+                    message: '',
+                    checkout() {
+                        this.showPaymentInput = true;
+                    },
+                    processPayment() {
+                        const totalCost = parseFloat(document.getElementById('total-cost').textContent);
+                        if (this.paymentAmount >= totalCost) {
+                            this.message = "Enjoy your pizzas!";
+                            this.pizzas = [];
+                            this.showPaymentInput = false;
+                        } else {
+                            this.message = "Sorry - that is not enough money!";
+                        }
+                        this.hideMessage();
+                    },
+                    hideMessage() {
+                        setTimeout(() => {
+                            this.message = '';
+                        }, 3000);
+                    },
+                    addPizza(size) {
+                        let price = 0;
+                        switch(size) {
+                            case 'small':
+                                price = prices.small;
+                                this.pizzas.push({ id: this.pizzas.length + 1, name: 'Small Pizza', price: price });
+                                break;
+                            case 'medium':
+                                price = prices.medium;
+                                this.pizzas.push({ id: this.pizzas.length + 1, name: 'Medium Pizza', price: price });
+                                break;
+                            case 'large':
+                                price = prices.large;
+                                this.pizzas.push({ id: this.pizzas.length + 1, name: 'Large Pizza', price: price });
+                                break;
+                        }
+                        this.updateTotalCost();
+                    },
+                    updateTotalCost() {
+                        const totalAmount = this.pizzas.reduce((total, pizza) => total + pizza.price, 0);
+                        document.getElementById('total-cost').textContent = totalAmount;
+                    }
+                }
+            }
+        </script>
+    </div>
+
+    <div class="pizzas" x-data="cart()">
+        <div class="pizza small_pizza">
+            <h2>Small Pizza</h2>
+            <img src="pizza-one.png" width="100">
+            <h3>R49.00</h3>
+            <div>
+                Medium margherita pizza with 3 toppings max. 2 or less meat topping. 3 or less other toppings.
+            </div>
+            <button @click="addPizza('small')">Buy</button>
+        </div>
+
+        <div class="pizza medium_pizza">
+            <h2>Medium Pizza</h2>
+            <img src="pizza-one.png" width="125">
+            <h3>R89.00</h3>
+            <div>
+                Medium margherita pizza with 3 toppings max. 2 or less meat topping. 3 or less other toppings.
+            </div>
+            <button @click="addPizza('medium')">Buy</button>
+        </div>
+
+        <div class="pizza large_pizza">
+            <h2>Large Pizza</h2>
+            <img src="pizza-one.png" width="150">
+            <h3>R129.00</h3>
+            <div>
+                Medium margherita pizza with 3 toppings max. 2 or less meat topping. 3 or less other toppings.
+            </div>
+            <button @click="addPizza('large')">Buy</button>
+        </div>
+    </div>
+
+    <div class="pizza contact_us">
+        <h2>Contact Details</h2>
+        <ul class="contact-list">
+            <li>Contact us at 011 548 4896</li>
+            <li>info@perfectpizza.co.za</li>
+            <li>@Perfect Pizza on FB & Insta</li> 
+        </ul>
+    </div>
+</body>
+
+</html>
