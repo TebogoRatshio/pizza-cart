@@ -13,9 +13,9 @@
 
     <div>
         <div class="heading">
-            <h1>Perfect Pizza</h1>
+            <h1>Zandile's Perfect Pizza</h1>
         </div>
-    
+    <hr>
         <div class="subheading">
             <h4>Pizza Orders</h4>
         </div>
@@ -34,6 +34,7 @@
                 <span id="small-count">[0]</span>
             </h3>
         </div>
+        
         <div class="orders">
             <h3>Medium Pizza 
                 <button onclick="increment('medium')">+</button>
@@ -42,6 +43,7 @@
                 <span id="medium-count">[0]</span>
             </h3>
         </div>
+        
         <div class="orders">
             <h3>Large Pizza 
                 <button onclick="increment('large')">+</button>
@@ -119,13 +121,15 @@
                     showPaymentInput: false,
                     paymentAmount: 0,
                     message: '',
+                    change: 0,
                     checkout() {
                         this.showPaymentInput = true;
                     },
                     processPayment() {
                         const totalCost = parseFloat(document.getElementById('total-cost').textContent);
                         if (this.paymentAmount >= totalCost) {
-                            this.message = "Enjoy your pizzas!";
+                            this.change = this.paymentAmount - totalCost;
+                            this.message = `Enjoy your pizzas! Your change is R${this.change.toFixed(2)}`;
                             this.pizzas = [];
                             this.showPaymentInput = false;
                         } else {

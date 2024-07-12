@@ -5,7 +5,7 @@
 .subheading {
     text-align: center;
     padding-right: 15%;
-    position: sticky;
+    margin-top: 5px;
 }
 
 .orders {
